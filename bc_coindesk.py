@@ -31,13 +31,12 @@ month_map = {"01": "January",
 			 "11": "November",
 			 "12": "December"}
 
-for i in range(df.Date.size): #make Date entries as datetime objects
-														   #"%m/%d/%Y"
-	 dt_arr.append(datetime.datetime.strptime(df.Date[i], "%m/%d/%Y"))
+for i in range(df.Date.size): #make Date entries as datetime objects											  
+	 dt_arr.append(datetime.datetime.strptime(df.Date[i], "%m/%d/%Y")) #initialize datetime conversion
 
 
 df["Date"] = dt_arr #put it back in the dataframe
-df.Date = pd.to_datetime(df.Date, format="%m/%d/%Y")
+df.Date = pd.to_datetime(df.Date, format="%m/%d/%Y") #finalized datetime conversion
 
 
 fig = plt.figure()
@@ -64,15 +63,15 @@ ax1.fill_between(df.Date.values[:], df.Close.values[:], bc_mean_arr, where=(df.C
 
 
 ax1.text(0.025, 2.1, "Average Price: $" + str(round(bc_mean, 2)), transform=plt.gca().transAxes, fontdict=dict(color="#5f717b", size=12))
-ax1.annotate("Dates with Prices < Avg. Price", (df.Date.values[10], bc_mean + 100), xytext=(df.Date.values[6], bc_mean + 350), arrowprops=dict(facecolor="red", edgecolor="red", alpha=0.3), color="red")
-ax1.annotate("Dates with Prices > Avg. Price", (df.Date.values[23], bc_mean - 75), xytext=(df.Date.values[20], bc_mean - 350), arrowprops=dict(facecolor="#32bd12", edgecolor="#32bd12", alpha=0.3), color="green")
+ax1.annotate("Dates with Prices < Avg. Price", (df.Date.values[10], bc_mean + 100), xytext=(df.Date.values[6], bc_mean + 350), arrowprops=dict(facecolor="red", edgecolor="red", alpha=0.3), color="red") #arbitrary
+ax1.annotate("Dates with Prices > Avg. Price", (df.Date.values[23], bc_mean - 75), xytext=(df.Date.values[20], bc_mean - 350), arrowprops=dict(facecolor="#32bd12", edgecolor="#32bd12", alpha=0.3), color="green") #arbitrary
 
 plt.setp(ax1.xaxis.get_ticklabels(), visible=False)
 
 ax2.plot(df.Date, df.Close, color="#232323")
 ax2.scatter(df.Date.values[:], df.Close.values[:], color="#232323", s=20)
-ax2.fill_between(df.Date.values[:], df.Close.values[:], df.Close[0], where=(df.Close.values[:] >= df.Close[0]), facecolor="#32bd12", edgecolor="#32bd12", alpha=0.3)
-ax2.fill_between(df.Date.values[:], df.Close.values[:], df.Close[0], where=(df.Close.values[:] <= df.Close[0]), facecolor="red", edgecolor="red", alpha=0.3)
+ax2.fill_between(df.Date.values[:], df.Close.values[:], df.Close[0], where=(df.Close.values[:] >= df.Close[0]), facecolor="#32bd12", edgecolor="#32bd12", alpha=0.3) #arbitrary
+ax2.fill_between(df.Date.values[:], df.Close.values[:], df.Close[0], where=(df.Close.values[:] <= df.Close[0]), facecolor="red", edgecolor="red", alpha=0.3) #arbitrary
 
 for tck in ax2.xaxis.get_ticklabels():
 	tck.set_rotation(45)
@@ -80,8 +79,8 @@ for tck in ax2.xaxis.get_ticklabels():
 ax2.xaxis.set_major_locator(mticker.MaxNLocator(nbins=21))
 ax2.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d"))
 
-ax2.annotate("Dates with Prices < " + fr + " Prices", (df.Date.values[0], df.Close.values[0] + 250), xytext=(df.Date.values[1], 1800), arrowprops=dict(facecolor="red", edgecolor="red", alpha=0.3), color="red")
-ax2.annotate("Dates with Prices > " + fr + " Prices", (df.Date.values[16], df.Close.values[16] + 250), xytext=(df.Date.values[12], 2300), arrowprops=dict(facecolor="#32bd12", edgecolor="#32bd12", alpha=0.3), color="green")
+ax2.annotate("Dates with Prices < " + fr + " Prices", (df.Date.values[0], df.Close.values[0] + 250), xytext=(df.Date.values[1], 1800), arrowprops=dict(facecolor="red", edgecolor="red", alpha=0.3), color="red") #arbitrary
+ax2.annotate("Dates with Prices > " + fr + " Prices", (df.Date.values[16], df.Close.values[16] + 250), xytext=(df.Date.values[12], 2300), arrowprops=dict(facecolor="#32bd12", edgecolor="#32bd12", alpha=0.3), color="green") #arbitrary
 
 ax2.text(0.030, 0.9, fr + " Price: $" + str(round(df.Close.values[1], 2)), transform=plt.gca().transAxes, fontdict=dict(color="#5f717b", size=12))
 
@@ -189,9 +188,9 @@ write_dates(fwrite, df.loc[df.Close > bc_mean, "Date"].values, True)
 fwrite.write("No. of Days below Avg. Price: " + str(df.loc[df.Close < bc_mean, "Close"].size) + " | ")
 write_dates(fwrite, df.loc[df.Close < bc_mean, "Date"].values, True)
 
-fwrite.write("No. of Days above " + fr + " Price: " + str(df.loc[df.Close > df.Close.values[1], "Date"].size) + " | ") #modular
+fwrite.write("No. of Days above " + fr + " Price: " + str(df.loc[df.Close > df.Close.values[1], "Date"].size) + " | ") #arbitrary
 write_dates(fwrite, df.loc[df.Close > df.Close.values[1], "Date"].values, True)
-fwrite.write("No. of Days below or equal to" + fr + " Price: " + str(df.loc[df.Close < df.Close.values[1], "Date"].size) + " | ") #modular 
+fwrite.write("No. of Days below or equal to" + fr + " Price: " + str(df.loc[df.Close < df.Close.values[1], "Date"].size) + " | ") #arbitrary
 write_dates(fwrite, df.loc[df.Close <= df.Close.values[1], "Date"].values, True)
 
 fwrite.write("No. of days with increased prices(relative to previous): " + str(df_bar.loc[df_bar.changes > 0, "changes"].size) + " | ")
@@ -201,6 +200,4 @@ write_dates(fwrite, df_bar.loc[df_bar.changes < 0, "xlabels"].values, False)
 
 fwrite.close()
 
-print(df)
-print(df_bar)
 plt.show()
