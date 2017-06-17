@@ -1,3 +1,8 @@
+""" Bitcoin price analysis for specific time periods(csv file c/o coindesk.com).
+    includes data visualization and a stat sheet
+    modular, inputs of csv file can be varied"""
+
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
